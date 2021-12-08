@@ -30,7 +30,6 @@ registerDoParallel(cl, cores = ncore)
 response = 'New.case'
 source("ANM DATA PREP.R")
 source("ANM.causal.test.R")
-# set.seed(12)
 
 #### Define the p-value vectors of the Hypo tests ####
 quarter.1.pvalue = rep(0,6)
@@ -170,4 +169,4 @@ ANM.results.pvalue = cbind(quarter.1.pvalue, quarter.2.pvalue, quarter.3.pvalue,
 rownames(ANM.results.pvalue) = c('Population Density','Percent of Males','Median Income',
                                  'Percent of Seniors','Percent of African Americans','Percent of Hispanic Americans')
 colnames(ANM.results.pvalue) = c('quarter 1','quarter 2', 'quarter 3', 'quarter 4')
-print(ANM.results.pvalue)
+stargazer::stargazer(round(ANM.results.pvalue,4), type = 'text')

@@ -1,17 +1,17 @@
 #### Generate the pairwise temporal datasets ####
 
-states = read.csv("UMD Data/State.csv")
+states = read.csv("Data/UMD Data/State.csv")
 states = as.data.table(states)
 states$date = lubridate::mdy(states$date)
 states$Week <- lubridate::floor_date(states$date, "week", week_start = 1)
 
-national = read.csv("UMD Data/National.csv")
+national = read.csv("Data/UMD Data/National.csv")
 national = as.data.table(national)
 national$date = lubridate::mdy(national$date)
 national$Week <- lubridate::floor_date(national$date, "week", week_start = 1)
 
-Google.20 = read.csv("Region_Mobility_Report_CSVs/2020_US_Region_Mobility_Report.csv")
-Google.21 = read.csv("Region_Mobility_Report_CSVs/2021_US_Region_Mobility_Report.csv")
+Google.20 = read.csv("Data/Region_Mobility_Report_CSVs/2020_US_Region_Mobility_Report.csv")
+Google.21 = read.csv("Data/Region_Mobility_Report_CSVs/2021_US_Region_Mobility_Report.csv")
 Google.mob = rbind(Google.20, Google.21)
 Google.mob <- Google.mob[,c(9,3,10:15)]
 Google.mob = as.data.table(Google.mob)
