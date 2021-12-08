@@ -1,0 +1,28 @@
+{
+    "id": "174861E8",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1638943278037.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "id": "034ae9b4fb7346b2935c5d75612e8f44",
+        "name": "tprob",
+        "title": "tprob",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 3180157210004693608,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1638943278037,
+    "read_only": false,
+    "read_only_alternatives": []
+}

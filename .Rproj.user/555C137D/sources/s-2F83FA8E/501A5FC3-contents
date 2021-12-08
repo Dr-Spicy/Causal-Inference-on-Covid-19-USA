@@ -1,0 +1,98 @@
+n <- length(x) + burn
+bootvec <- numeric(n)
+
+# First draw
+pr <- freq_table(x)
+bootvec[1] <- sample(names(pr), 1, prob = pr)
+
+# Draws
+for (i in 2:(lx + 1)) {
+    tprob <- calculate_transition_probabilities(x, lx = i - 1)
+    val <- tprob[[bootvec[i - 1]]]
+    
+    draw <- ifelse(length(names(val)) == 1,
+                   names(val),
+                   sample(names(val), 1, prob = val)
+    )
+    
+    bootvec[i] <- strsplit(draw, " ")[[1]][i]
+}
+
+tprob <- calculate_transition_probabilities(x, lx)
+
+for (i in (lx + 2):n) {
+    val <- tprob[[bootvec[i - 1]]]
+    
+    draw <- ifelse(length(names(val)) == 1,
+                   names(val),
+                   sample(names(val), 1, prob = val)
+    )
+    
+    bootvec[i] <- strsplit(draw, " ")[[1]][lx + 1]
+}
+
+bootvec <- bootvec[(burn + 1):n]
+as.numeric(bootvec)
+
+type = "quantiles";
+quantiles = c(5, 95);
+bins = NULL;
+limits = NULL;
+quiet=T
+
+x <- code_sample(x, type, quantiles, bins, limits)
+y <- code_sample(y, type, quantiles, bins, limits)
+
+# Lead = y
+if (!quiet) cat("  [calculate] X->Y transfer entropy\n")
+texy <- calc_te_shannon(y, lx = ly, x, ly = lx)
+consty <- shuffle_shannon(
+    x = y,
+    lx = ly,
+    y = x,
+    ly = lx,
+    shuffles = shuffles
+)
+stexy <- texy - consty
+
+# Lead = x
+if (!quiet) cat("  [calculate] Y->X transfer entropy\n")
+teyx <- calc_te_shannon(x, lx = lx, y, ly = ly)
+constx <- shuffle_shannon(
+    x = x,
+    lx = lx,
+    y = y,
+    ly = ly,
+    shuffles = shuffles
+)
+steyx <- teyx - constx
+
+# Bootstrap
+if (nboot > 0) {
+    if (!quiet) {
+        cat(sprintf(
+            "  [bootstrap] %s time%s\n",
+            nboot, mult_s(nboot)
+        ))
+    }
+    
+    boot <- future.apply::future_sapply(seq_len(nboot), function(i) {
+        bootstrap_shannon(
+            x = x,
+            lx = lx,
+            y = y,
+            ly = ly,
+            burn = burn
+        )
+    }, future.seed = TRUE)
+} else {
+    boot <- NA
+}
+
+return(list(
+    teyx = teyx,
+    texy = texy,
+    steyx = steyx,
+    stexy = stexy,
+    boot = boot
+))
