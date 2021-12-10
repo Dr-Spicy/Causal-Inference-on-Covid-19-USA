@@ -78,3 +78,4 @@ for (i in 1:51) {
 }
 
 stargazer(GT.l.p2.x2y, type = 'text')
+stargazer(GT.l.p2.y2x, type = 'text')
